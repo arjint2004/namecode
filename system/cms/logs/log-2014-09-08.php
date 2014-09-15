@@ -1,0 +1,29 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+
+ERROR - 2014-09-08 14:53:34 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newnamegroup.php 15
+ERROR - 2014-09-08 14:53:34 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newnamegroup.php 19
+ERROR - 2014-09-08 14:53:34 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newnamegroup.php 25
+ERROR - 2014-09-08 14:53:52 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newcategory.php 14
+ERROR - 2014-09-08 14:53:52 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newcategory.php 18
+ERROR - 2014-09-08 14:53:52 --> Severity: Notice  --> Undefined variable: data D:\webdevel\nameconvert\addons\shared_addons\modules\nameconvert\views\admin\newcategory.php 25
+ERROR - 2014-09-08 14:55:30 --> Page Missing: admin/nameconvert/newname
+ERROR - 2014-09-08 14:55:35 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:35 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:35 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:35 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:35 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:43 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:43 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:43 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:43 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:43 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:48 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:48 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:48 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:48 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 14:55:48 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 17:38:21 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 17:38:21 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 17:38:21 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 17:38:21 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
+ERROR - 2014-09-08 17:38:21 --> Severity: Warning  --> Cannot modify header information - headers already sent by (output started at D:\webdevel\nameconvert\index.php:273) D:\webdevel\nameconvert\system\codeigniter\core\Output.php 419
