@@ -224,7 +224,7 @@ class Admin extends Admin_Controller
 	public function newcategory()
 	{
 		if(isset($_POST['kategori'])){
-			$data_insert=array('kategori'=>$_POST['kategori'],'keterangan'=>$_POST['keterangan'],'active'=>1);
+			$data_insert=array('kategori'=>strtoupper($_POST['kategori']),'keterangan'=>$_POST['keterangan'],'active'=>1);
 			if($this->db->insert('name_kategori_indikator',$data_insert)){
 				redirect('admin/nameconvert/identycategory');
 			}
@@ -255,7 +255,7 @@ class Admin extends Admin_Controller
 			//pr($data);die();
 			foreach($data['cells'] as $baris=>$dataimp){
 				$insert_data=array(
-					'kategori'=>$dataimp[1],
+					'kategori'=>strtoupper($dataimp[1]),
 					'keterangan'=>"$dataimp[2]",
 					'active'=>$dataimp[3]
 				);
@@ -282,10 +282,10 @@ class Admin extends Admin_Controller
 				$this->db->query('DELETE FROM default_indikator WHERE id='.$id.'');
 			}
 		}
-		if(isset($_POST['id_kat_indikator'])){
+		if(isset($_POST['id_kat_indikator']) && $_POST['id_kat_indikator']!=''){
 			$cnd="AND id_kat_indikator=".$_POST['id_kat_indikator']."";
 		}else{
-		$cnd="";
+			$cnd="";
 		}
 		//$this->load->model('nameconvert/nameconvert_m');
 	
@@ -312,7 +312,7 @@ class Admin extends Admin_Controller
 			//pr($_POST);die();
 			foreach($_POST['nama'] as $idx=>$nama){
 				if($nama!=''){
-					$data_insert=array('nama'=>$nama,'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
+					$data_insert=array('nama'=>strtoupper($nama),'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
 					$this->db->insert('indikator',$data_insert);
 				}
 			}
@@ -365,16 +365,24 @@ class Admin extends Admin_Controller
 		if(isset($_FILES['file_excell'])){
 			$data=$this->getdataexcell();
 			unset($data['cells'][1]);
-			//pr($data);die();
+			
 			foreach($data['cells'] as $baris=>$dataimp){
-				$insert_data=array(
-					'nama'=>$dataimp[1],
-					'id_kat_indikator'=>$_POST['id_kat_indikator'],
-					'active'=>1
-				);
-				if($this->db->insert('indikator',$insert_data)){
-					unset($insert_data);
+				
+				$namaarray=explode(' ',$dataimp[1]);
+				//pr($namaarray);die();
+				foreach($namaarray as $namamurni){
+					if($namamurni!=''){
+						$insert_data=array(
+							'nama'=>strtoupper($namamurni),
+							'id_kat_indikator'=>$_POST['id_kat_indikator'],
+							'active'=>1
+						);
+						if($this->db->insert('indikator',$insert_data)){
+							unset($insert_data);
+						}				
+					}				
 				}
+
 			}
 			redirect('admin/nameconvert/identyname');
 		}
@@ -414,7 +422,7 @@ class Admin extends Admin_Controller
 	public function newnamegroup()
 	{
 		if(isset($_POST['group'])){
-			$data_insert=array('group'=>$_POST['group'],'keterangan'=>$_POST['keterangan'],'nama'=>'','active'=>1);
+			$data_insert=array('group'=>strtoupper($_POST['group']),'keterangan'=>$_POST['keterangan'],'nama'=>'','active'=>1);
 			if($this->db->insert('name_group',$data_insert)){
 				redirect('admin/nameconvert/namegroup');
 			}
@@ -433,7 +441,7 @@ class Admin extends Admin_Controller
 			//pr($data);die();
 			foreach($data['cells'] as $baris=>$dataimp){
 				$insert_data=array(
-					'group'=>$dataimp[1],
+					'group'=>strtoupper($dataimp[1]),
 					'keterangan'=>$dataimp[2],
 					'nama'=>'',
 					'active'=>$dataimp[3]
@@ -504,29 +512,63 @@ class Admin extends Admin_Controller
 
 	public function process($id_group=0)
 	{
-		pr($_POST);die();
+		
 		//$this->load->model('nameconvert/nameconvert_m');
 		$this->load->library('nameconvert/nameconverts');
 		
-		$dataprocess=$this->nameconvert_m->get_namaByIdGroup($_POST['id_group']);
+		$dataprocess=$this->nameconvert_m->get_namaByIdGroup($id_group);
 		
 		foreach($dataprocess as $dataresulr){
+			$result=$this->nameconverts->clear_name($dataresulr['name']);
+			$conculsion=$this->conculsion($result);
 			$this->db->where('id',$dataresulr['id']);
-			$data_update=array('result'=>serialize($this->nameconverts->clear_name($dataresulr['name'])));
+			$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
 			$this->db->update('nameconverts',$data_update);
 		}
 		
 	}
+	private function conculsion($namaarray=array()){
 
-	public function namelist($id_group=0)
+		foreach($namaarray as $namaarray1){
+			foreach($namaarray1 as $namaarray2){
+				$merged[]=$namaarray2;
+			}
+		}
+		
+		$eval='';
+		$i=-1;
+		$resultnya='';
+		$conculsion='';
+		foreach($merged as $ix=>$result){
+			$i++;
+			$eval .='$merged[0]==$merged['.$i.'] AND ';
+			$resultnya .=''.$result.' ';
+		}
+		$eval=substr($eval,0,-5);
+		$eval1='if('.$eval.'){
+			$conculsion="Murni '.$merged[0].'";
+		}else{
+			$conculsion="Campuran '.$resultnya.'";
+		}';
+		@eval($eval1);
+		//pr(substr($eval,0,-5));
+		//pr($eval);
+		//pr($conculsion);
+		//pr($merged);
+		return $conculsion;
+	}
+	public function namelist()
 	{
 		if(isset($_POST['process'])){
 			$this->load->library('nameconvert/nameconverts');
 			$dataprocess=$this->nameconvert_m->get_namaByIdGroup($_POST['id_group']);
-			
+			//pr($dataprocess);die();
 			foreach($dataprocess as $dataresulr){
+				$result=$this->nameconverts->clear_name($dataresulr['name']);
+				$conculsion=$this->conculsion($result);
 				$this->db->where('id',$dataresulr['id']);
-				$data_update=array('result'=>serialize($this->nameconverts->clear_name($dataresulr['name'])));
+				$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
+				
 				$this->db->update('nameconverts',$data_update);
 			}
 		}
@@ -559,16 +601,22 @@ class Admin extends Admin_Controller
 	{
 		//$this->load->model('nameconvert/nameconvert_m');
 		if(isset($_POST['name'])){
+			$this->load->library('nameconvert/nameconverts');
+			$nameclear=$this->nameconverts->clearname(strtoupper($_POST['name']));
+			$mother=$this->nameconverts->clearname(strtoupper($_POST['mother']));
+			$father=$this->nameconverts->clearname(strtoupper($_POST['father']));
 			$data_insert=array(
 								'id_group'=>$_POST['id_group'],
-								'name'=>$_POST['name'],
+								'name'=>$nameclear,
 								'born_place'=>$_POST['born_place'],
 								'born_date'=>$_POST['born_date'],
 								'religion'=>$_POST['religion'],
 								'last_education'=>$_POST['last_education'],
 								'employment'=>$_POST['employment'],
-								'mother'=>$_POST['mother'],
-								'father'=>"".$_POST['father']."",
+								'mother'=>$mother,
+								'father'=>"".$father."",
+								'result'=>"",
+								'kesimpulan'=>"",
 								'active'=>1
 				);
 			if($this->db->insert('nameconverts',$data_insert)){
@@ -619,24 +667,30 @@ class Admin extends Admin_Controller
 	public function importname()
 	{
 		//$this->load->model('nameconvert/nameconvert_m');
-	
+		$this->load->library('nameconvert/nameconverts');
+		
 		$group =$this->nameconvert_m->getAll_nameGroup("*",1);
 		if(isset($_FILES['file_excell'])){
 			$data=$this->getdataexcell();
-			unset($data['cells'][1]);	 	 	 	 	 	 	 
+			unset($data['cells'][1]);	 	 	
+				 	 	 
 			foreach($data['cells'] as $baris=>$dataimp){
+				$nameclear=$this->nameconverts->clearname($dataimp[1]);
+				//pr($dataimp[1]); 	die(); 
 				$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
 				$born_date=gmdate("d-m-Y", $UNIX_DATE);
 				$insert_data=array(
 					'id_group'=>$_POST['id_group'],
-					'name'=>$dataimp[1],
+					'name'=>strtoupper($nameclear),
 					'born_place'=>$dataimp[2],
 					'born_date'=>$born_date,
 					'religion'=>$dataimp[4],
 					'last_education'=>$dataimp[5],
 					'employment'=>$dataimp[6],
-					'mother'=>$dataimp[7],
-					'father'=>"$dataimp[8]",
+					'mother'=>strtoupper($dataimp[7]),
+					'father'=>"".strtoupper($dataimp[8])."",
+					'result'=>"",
+					'kesimpulan'=>"",
 					'active'=>1
 				);
 				//pr($insert_data);
@@ -644,7 +698,7 @@ class Admin extends Admin_Controller
 					unset($insert_data);
 				}
 			}
-			redirect('admin/nameconvert/namegroup');
+			redirect('admin/nameconvert/namelist');
 		}
 		
 		$this->template
@@ -655,6 +709,28 @@ class Admin extends Admin_Controller
 	//IMPORT
 	
 	//EXPORT
-	
+	function export($id_groups=0){
+		$rss='';
+		$this->load->library('nameconvert/export');
+		$namadata=$this->db->query('SELECT * FROM default_nameconverts WHERE id_group='.$id_groups.'')->result_array();
+		foreach($namadata as $idd=>$datanama){
+			$arrresult=unserialize($datanama['result']);
+			foreach($arrresult as $nm=>$resdata){
+				$rrq=implode(',',$resdata);
+				$rss .=''.$nm.'='.$rrq.' |';
+			}
+			
+			$namadata[$idd]['result']=$rss;
+			$rss='';
+		}
+		//pr($namadata);
+		$this->export->process($namadata);
+	}
 	//STATISTIC
+	
+	function test_clearname(){
+		$this->load->library('nameconvert/nameconverts');
+		$nameclear=$this->nameconverts->clearname('HJ. SISWO MULYO SUMARTO / WASIS');
+		pr($nameclear);
+	}
 }

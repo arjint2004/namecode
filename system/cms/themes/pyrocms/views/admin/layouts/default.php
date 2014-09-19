@@ -114,14 +114,6 @@ div#menubox #box {
 					<li><a href="<?=base_url('admin/nameconvert/importname')?>">Import Name</a></li>
 				</ul>
 			</div>
-            <div class="bt"><a >Processing</a>
-				<ul>
-					<li><a href="<?=base_url('admin/nameconvert/importexcell')?>">Import Excell</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/exportexcell')?>">Export Excell</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/statistic')?>">Statistic</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/quickprocess')?>">Quick Process</a></li>
-				</ul>
-			</div>
         </div>
     </div>
 </div>
