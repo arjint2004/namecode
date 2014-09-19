@@ -6,11 +6,77 @@ $(function() {
 	$('#deletecekall').click(function () {    
 		$(':checkbox.delete').prop('checked', this.checked);    
 	});
+	$('#btndell').click(function () {    
+							$('form#identyname').append("<div class=\"error-box\" style='display: block; top: 50%; position: fixed; left: 46%;'></div>");
+							$(".error-box").html("Deleting data").fadeIn("slow");   
+							$.ajax({
+								type: "POST",
+								data: $('form#identyname').serialize(),
+								url: $('form#identyname').attr('action'),
+								beforeSend: function() {
+									//$(obj).attr('onblur',"");
+								},
+								error	: function(){
+									$(".error-box").css('background-color','rgba(255, 0, 0, 0.5)');
+									$(".error-box").delay(1500).html('Fetching data failed. Try again.');
+									$(".error-box").delay(1500).fadeOut("slow",function(){
+										$(this).remove();
+									});
+																	
+								},
+								success: function(msg) {
+									
+									
+									//$(obj).attr('onblur',"");
+									$(".error-box").css('background-color','#4BB008');
+									$(".error-box").delay(500).html('Delete data successed');
+									$(".error-box").delay(500).fadeOut("slow",function(){
+										$('#content-body').html(msg);
+										$(this).remove();
+									});	
+								}
+							});
+							return false;
+	});
+	
 	$('#ExpExcell').click(function () {    
 		$('form#addpin').attr('action','<?=base_url()?>admin/ihs/export');
 		$('form#addpin').attr('target', '__blank');  
 		$('form#addpin').submit();
 	});
+	
+						$('div.pagination ul li a').click(function () { 
+							$('form#identyname').append("<div class=\"error-box\" style='display: block; top: 50%; position: fixed; left: 46%;'></div>");
+							$(".error-box").html("Fetching data").fadeIn("slow");   
+							$.ajax({
+								type: "POST",
+								data: "id_group="+$('select#id_kat_indikator').val()+"&<?=$this->security->get_csrf_token_name();?>=<?=$this->security->get_csrf_hash();?>",
+								url: $(this).attr('href'),
+								beforeSend: function() {
+									//$(obj).attr('onblur',"");
+								},
+								error	: function(){
+									$(".error-box").css('background-color','rgba(255, 0, 0, 0.5)');
+									$(".error-box").delay(1500).html('Fetching data failed. Try again.');
+									$(".error-box").delay(1500).fadeOut("slow",function(){
+										$(this).remove();
+									});
+																	
+								},
+								success: function(msg) {
+									
+									
+									//$(obj).attr('onblur',"");
+									$(".error-box").css('background-color','#4BB008');
+									$(".error-box").delay(500).html('Fetching data successed');
+									$(".error-box").delay(500).fadeOut("slow",function(){
+										$('#content-body').html(msg);
+										$(this).remove();
+									});	
+								}
+							});
+							return false;
+						});
 });
 </script>
 <section class="title">
@@ -18,13 +84,13 @@ $(function() {
 </section>
 <section class="item">
 	<div class="content">
-		<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="addpin"'); ?>
+		<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="identyname"'); ?>
 		
 		<table class="zebra-striped">
 			<tr>
 				<th style="text-align:left;width:200px;">Choose Category Identifier :</th>
 				<th style="text-align:left;">
-					<select onchange="return submit();" style="width:200px;" name="id_kat_indikator" required >
+					<select onchange="return submit();" style="width:200px;" id="id_kat_indikator" name="id_kat_indikator" required >
 						<option value="">Select Category Identifier</option>
 						<? foreach($identifirecat as $dataidentifirecat){?>
 						<option <?if($dataidentifirecat['id']==@$_POST['id_kat_indikator']){echo 'selected';}?> value="<?=$dataidentifirecat['id']?>"><?=$dataidentifirecat['kategori']?></option>
@@ -43,10 +109,11 @@ $(function() {
 				<th style="width:50px;text-align:center"><input type="checkbox" name="idxall" value="1" id="deletecekall"/></th>
 			</tr>
 			<? 
-			$no=1;
+			if(@$pagination['current_page']==0){@$pagination['current_page']=1;}
+				$noq=(@$pagination['current_page']*@$pagination['per_page'])-@$pagination['per_page']+1;
 			foreach($data as $datane){?>
 			<tr>
-				<td><?=$no++?></td>
+				<td><?=$noq++?></td>
 				<td><?=$datane['nama']?></td>
 				<td><a href="<?=base_url('admin/nameconvert/editidentyname/'.$datane['id'].'')?>">Edit</a></td>
 				<td><a href="<?=base_url('admin/nameconvert/deleteidentyname/'.$datane['id'].'')?>" onclick="if(!confirm('Are you sure?')){return false;}">Delete</a></td>
@@ -58,7 +125,7 @@ $(function() {
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><input type="submit" name="delete" value="Delete" /></td>
+				<td><input type="submit" name="delete" id="btndell" value="Delete" /></td>
 			</tr>
 		</table>
 		<?php echo form_close(); ?>

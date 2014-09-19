@@ -114,8 +114,8 @@
 								
 								//$(obj).attr('onblur',"");
 								$(".error-box").css('background-color','#4BB008');
-								$(".error-box").delay(800).html('Send data successed');
-								$(".error-box").delay(800).fadeOut("slow",function(){
+								$(".error-box").delay(300).html('Send data successed');
+								$(".error-box").delay(200).fadeOut("slow",function(){
 									$(this).remove();
 								});	
 							}

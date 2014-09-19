@@ -140,7 +140,7 @@ class Nameconvert_m extends MY_Model {
 	public function get_identifierName($field="*",$limit=array(),$cnd)
 	{
 		$q=$this->db->query('SELECT * FROM default_indikator WHERE active=1 '.$cnd.' LIMIT '.$limit[1].','.$limit[0].'');
-		//echo $this->db->last_query();die();
+		//echo $this->db->last_query();//die();
 		return $q->result_array();
 	}
 	
