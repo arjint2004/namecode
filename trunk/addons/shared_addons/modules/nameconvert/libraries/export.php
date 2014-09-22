@@ -12,7 +12,7 @@ class Export
 				break;
 			}
 					$header=array(
-							array('Data','Name Research'),
+							array('','')
 					);
 			/** Include PHPExcel */
 			require_once 'PHPExcel.php';
