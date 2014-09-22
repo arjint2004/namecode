@@ -310,9 +310,11 @@ class Admin extends Admin_Controller
 		//$this->load->model('nameconvert/nameconvert_m');
 		if(isset($_POST['nama'])){
 			//pr($_POST);die();
+			$this->load->library('nameconvert/nameconverts');
 			foreach($_POST['nama'] as $idx=>$nama){
 				if($nama!=''){
-					$data_insert=array('nama'=>strtoupper($nama),'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
+					$nameclear=$this->nameconverts->clearname(strtoupper($nama));
+					$data_insert=array('nama'=>strtoupper($nameclear),'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
 					$this->db->insert('indikator',$data_insert);
 				}
 			}
@@ -365,10 +367,10 @@ class Admin extends Admin_Controller
 		if(isset($_FILES['file_excell'])){
 			$data=$this->getdataexcell();
 			unset($data['cells'][1]);
-			
+			$this->load->library('nameconvert/nameconverts');
 			foreach($data['cells'] as $baris=>$dataimp){
-				
-				$namaarray=explode(' ',$dataimp[1]);
+				$nameclear=$this->nameconverts->clearname(strtoupper($dataimp[1]));
+				$namaarray=explode(' ',$nameclear);
 				//pr($namaarray);die();
 				foreach($namaarray as $namamurni){
 					if($namamurni!=''){
@@ -559,6 +561,10 @@ class Admin extends Admin_Controller
 	}
 	public function namelist()
 	{
+		if(isset($_POST['ExportExcell'])){
+			$this->export($_POST['id_group']);
+			die();
+		}
 		if(isset($_POST['process'])){
 			$this->load->library('nameconvert/nameconverts');
 			$dataprocess=$this->nameconvert_m->get_namaByIdGroup($_POST['id_group']);

@@ -1,6 +1,14 @@
 <script>
 				$(document).ready(function(){
 					
+					$('input#ExportExcell').click(function () {    
+						if($('select#id_groupnamelist').val()==''){
+							$('select#id_groupnamelist').next('div#id_groupnamelist_chzn').children('a').css('border','1px solid rgba(255, 0, 0, 0.5)');
+							return false;
+						}else{
+							$('select#id_groupnamelist').next('div#id_groupnamelist_chzn').children('a').css('border','1px solid #ccc');
+						}
+					});
 					$('button#process').click(function () {    
 							
 							if($('select#id_groupnamelist').val()==''){
@@ -163,11 +171,16 @@
 						<? } ?>
 						</select>
 					</td>
-					<td id="loadloop">
+					<td id="loadloop" style="width:80px;">
 						<div class="buttons" style="text-align:left;margin:0;">		
 							<button class="btn green" style="margin:0;" value="Process" id="process" name="process" type="submit">
 								<span>Process</span>
 							</button>
+						</div>
+					</td>
+					<td>
+						<div class="buttons" style="text-align:left;margin:0;">		
+							<input type="submit" class="btn grey" style="margin:0; padding:7px;" id="ExportExcell" name="ExportExcell" value="ExportExcell" />
 						</div>
 					</td>
 				</tr>
