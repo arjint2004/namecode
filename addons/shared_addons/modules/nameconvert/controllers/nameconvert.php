@@ -25,37 +25,101 @@ class Nameconvert extends Public_Controller
 	/**
 	 * All items
 	 */
-	public function process($token="",$action="")
+	public function process($token="",$actionx="")
 	{
-		echo $token;
-		echo $action; 
+		//echo $token;
+		//echo $actionx; 
 		//echo md5("CreatedByAsbinArjinto12222014");
 		if($token=="301048a7ace156bd32241ba0021b6c0d"){	
-			if($action="ExportExcell"){
+			if($actionx=="ExportExcell"){
 				$this->export($_POST['id_group']);
 				die();
 			}
-			if($action="ExportExcellUnknown"){
+			if($actionx=="ExportExcellUnknown"){
 				$this->exportunknown($_POST['id_group']);
 				die();
 			}
-			if($action="process")){
+			if($actionx=="process"){
 				$this->load->library('nameconvert/nameconverts');
 				$dataprocess=$this->nameconvert_m->get_nama();
-				//pr($dataprocess);die();
+
 				foreach($dataprocess as $dataresulr){
+					//pr($dataresulr['name']);
 					$result=$this->nameconverts->clear_name($dataresulr['name']);
 					$conculsion=$this->conculsion2($result);
 					$this->db->where('id',$dataresulr['id']);
 					
 					$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
+					
 					if(strpos($conculsion, 'Unknown')===false){$data_update['has_unknown']=0;}else{$data_update['has_unknown']=1;}
 					$this->db->update('nameconverts',$data_update);
+					//echo $this->db->last_query();
 				}
 			}
 		}else{
 			echo "Wrong Authentication";
 		}
+	}
+	private function conculsion2($namaarray=array()){
+
+		foreach($namaarray as $namaarray1){
+			foreach($namaarray1 as $namaarray2){
+				$merged[]=$namaarray2;
+			}
+		}
+		
+		$eval='';
+		$i=-1;
+		$resultnya='';
+		$conculsion='';
+		$merged=array_unique($merged);
+		foreach($merged as $ix=>$result){
+			$i++;
+			$eval .='$merged[0]==$merged['.$i.'] AND ';
+			$resultnya .=''.$result.' - ';
+		}
+		$eval=substr($eval,0,-5);
+		$eval1='if('.$eval.'){
+			$conculsion="Murni '.$merged[0].'";
+		}else{
+			$conculsion="'.substr($resultnya,0,-3).'";
+		}';
+		@eval($eval1);
+		//pr(substr($eval,0,-5));
+		//pr($eval);
+		//pr($conculsion);
+		//pr($merged);
+		return $conculsion;
+	}
+	private function conculsion($namaarray=array()){
+
+		foreach($namaarray as $namaarray1){
+			foreach($namaarray1 as $namaarray2){
+				$merged[]=$namaarray2;
+			}
+		}
+		
+		$eval='';
+		$i=-1;
+		$resultnya='';
+		$conculsion='';
+		foreach($merged as $ix=>$result){
+			$i++;
+			$eval .='$merged[0]==$merged['.$i.'] AND ';
+			$resultnya .=''.$result.' ';
+		}
+		$eval=substr($eval,0,-5);
+		$eval1='if('.$eval.'){
+			$conculsion="Murni '.$merged[0].'";
+		}else{
+			$conculsion="Campuran '.$resultnya.'";
+		}';
+		@eval($eval1);
+		//pr(substr($eval,0,-5));
+		//pr($eval);
+		//pr($conculsion);
+		//pr($merged);
+		return $conculsion;
 	}
 	public function index($offset = 0)
 	{
