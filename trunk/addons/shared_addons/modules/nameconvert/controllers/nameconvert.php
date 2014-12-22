@@ -25,6 +25,10 @@ class Nameconvert extends Public_Controller
 	/**
 	 * All items
 	 */
+	public function process($offset = 0)
+	{
+		echo "neng kene iki cron";
+	}
 	public function index($offset = 0)
 	{
 		// set the pagination limit
