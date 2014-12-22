@@ -95,9 +95,9 @@ class Users extends Public_Controller
 	/**
 	 * Let's login, shall we?
 	 */
-	public function clitest()
+	public function clitest($to = 'World')
 	{
-		echo "clitest";
+		echo "Hello {$to}!".PHP_EOL;
 	}
 	public function login()
 	{
