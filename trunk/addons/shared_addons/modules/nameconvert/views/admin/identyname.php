@@ -44,13 +44,31 @@ $(function() {
 		$('form#addpin').attr('target', '__blank');  
 		$('form#addpin').submit();
 	});
+	$('table#identyname tbody tr td a.delete').click(function () {   
+									if(confirm('Are you sure?')){
+									var ob=$(this);
+										$.ajax({
+											type: "POST",
+											data: 'id_kat_indikator='+$('select#id_kat_indikator').val()+"&<?=$this->security->get_csrf_token_name();?>=<?=$this->security->get_csrf_hash();?>",
+											url: $(this).attr('href'),
+											beforeSend: function() {
+											},
+											error	: function(){							
+											},
+											success: function(msg) {
+												$(ob).parent('td').parent('tr').remove();
+											}
+										});
+									}
+									return false;
+	});
 	
 						$('div.pagination ul li a').click(function () { 
 							$('form#identyname').append("<div class=\"error-box\" style='display: block; top: 50%; position: fixed; left: 46%;'></div>");
 							$(".error-box").html("Fetching data").fadeIn("slow");   
 							$.ajax({
 								type: "POST",
-								data: "id_group="+$('select#id_kat_indikator').val()+"&<?=$this->security->get_csrf_token_name();?>=<?=$this->security->get_csrf_hash();?>",
+								data: "id_kat_indikator="+$('select#id_kat_indikator').val()+"&<?=$this->security->get_csrf_token_name();?>=<?=$this->security->get_csrf_hash();?>",
 								url: $(this).attr('href'),
 								beforeSend: function() {
 									//$(obj).attr('onblur',"");
@@ -93,14 +111,14 @@ $(function() {
 					<select onchange="return submit();" style="width:200px;" id="id_kat_indikator" name="id_kat_indikator" required >
 						<option value="">Select Category Identifier</option>
 						<? foreach($identifirecat as $dataidentifirecat){?>
-						<option <?if($dataidentifirecat['id']==@$_POST['id_kat_indikator']){echo 'selected';}?> value="<?=$dataidentifirecat['id']?>"><?=$dataidentifirecat['kategori']?></option>
+						<option <?if($dataidentifirecat['id']==@$_POST['id_kat_indikator']){echo 'selected';}if($dataidentifirecat['id']==@$_POST['id_group']){echo 'selected';}?> value="<?=$dataidentifirecat['id']?>"><?=$dataidentifirecat['kategori']?></option>
 						<? } ?>
 					</select>
 				</th>
 			</tr>
 		</table>
 		<br />
-		<table class="zebra-striped">
+		<table class="zebra-striped" id="identyname">
 			<tr>
 				<th>No</th>
 				<th>Name</th>
@@ -115,8 +133,8 @@ $(function() {
 			<tr>
 				<td><?=$noq++?></td>
 				<td><?=$datane['nama']?></td>
-				<td><a href="<?=base_url('admin/nameconvert/editidentyname/'.$datane['id'].'')?>">Edit</a></td>
-				<td><a href="<?=base_url('admin/nameconvert/deleteidentyname/'.$datane['id'].'')?>" onclick="if(!confirm('Are you sure?')){return false;}">Delete</a></td>
+				<td><a class="edit modal" href="<?=base_url('admin/nameconvert/editidentyname/'.$datane['id'].'')?>">Edit</a></td>
+				<td><a class="delete" href="<?=base_url('admin/nameconvert/deleteidentyname/'.$datane['id'].'')?>" >Delete</a></td>
 				<td style="text-align:center;"><input type="checkbox" name="idx[<?=$datane['id']?>]" value="<?=$datane['id']?>" class="delete" /></td>
 			</tr>
 			<? } ?>
@@ -128,6 +146,7 @@ $(function() {
 				<td><input type="submit" name="delete" id="btndell" value="Delete" /></td>
 			</tr>
 		</table>
+		<input type="hidden" name="page" id="paging" value="<?=$pagination['current_page']?>" />
 		<?php echo form_close(); ?>
 		<?php $this->load->view('admin/partials/pagination') ?>
 	</div>

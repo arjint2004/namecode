@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Export
     {
-		public function process($array)
+		public function process($array,$namefile='export')
         {
 			//pr($array);die();
 			switch(@$_POST['jenis']){
@@ -20,7 +20,7 @@ class Export
 			// Create new PHPExcel object
 			$objPHPExcel = new PHPExcel;
 			if(!empty($array) && !empty($header)){
-				$objPHPExcel->exports('pertemuan rpp',$array,'PertemuanPembelajaran',$header);
+				$objPHPExcel->exports('default',$array,$namefile,$header);
 			}else{
 				echo '<script>
 				alert("Data kosong");

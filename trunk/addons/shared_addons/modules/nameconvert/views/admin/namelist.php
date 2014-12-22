@@ -165,7 +165,7 @@
 				<tr>
 					<td  style="width:200px ;">
 						<select onchange="return submit();" style="width:200px;" name="id_group" id="id_groupnamelist"  >
-						<option value="">Select Group Name</option>
+						<option value="">Select Region</option>
 						<? foreach($groupname as $datagroupname){?>
 						<option <?if($datagroupname['id']==@$_POST['id_group']){echo 'selected';}?> value="<?=$datagroupname['id']?>"><?=$datagroupname['group']?></option>
 						<? } ?>
@@ -181,6 +181,7 @@
 					<td>
 						<div class="buttons" style="text-align:left;margin:0;">		
 							<input type="submit" class="btn grey" style="margin:0; padding:7px;" id="ExportExcell" name="ExportExcell" value="ExportExcell" />
+							<input type="submit" class="btn grey" style="margin:0; padding:7px;" id="ExportExcell" name="ExportExcellUnknown" value="ExportExcell Unknown Result" />
 						</div>
 					</td>
 				</tr>

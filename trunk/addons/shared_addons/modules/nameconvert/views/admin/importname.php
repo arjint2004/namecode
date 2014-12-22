@@ -12,10 +12,10 @@ $(document).ready(function(){
 		
 		<table class="zebra-striped">
 			<tr>
-				<td width="10%">Group</td>
+				<td width="10%">Region</td>
 				<td>
 					<select name="id_group" required >
-						<option value="">Pilih  Group</option>
+						<option value="">Pilih  Region</option>
 						<? foreach($group as $datagroup){?>
 						<option value="<?=$datagroup['id']?>"><?=$datagroup['group']?></option>
 						<? } ?>

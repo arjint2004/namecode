@@ -35,7 +35,7 @@ class Nameconvert_m extends MY_Model {
 
 	public function get_namaByIdGroup($id=0)
 	{
-		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE id_group='.$id.'');
+		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE id_group='.$id.' AND kesimpulan="" AND result=""');
 		//echo $this->db->last_query();die();
 		return $q->result_array();
 	}	
@@ -123,11 +123,12 @@ class Nameconvert_m extends MY_Model {
 		return $q->result_array();
 	}
 	//IDENTIFIER NAME
-	public function get_count_identifierName()
+	public function get_count_identifierName($cnd='')
 	{
 
-		$q=$this->db->query('SELECT COUNT(*) FROM default_indikator');
-		//echo $this->db->last_query();die();
+		$q=$this->db->query('SELECT COUNT(*) FROM default_indikator WHERE 1 '.$cnd.'');
+		//echo $this->db->last_query();
+		//die();
 		$cnt=$q->result_array();
 		return $cnt[0]['COUNT(*)'];
 	}
@@ -139,7 +140,7 @@ class Nameconvert_m extends MY_Model {
 	}
 	public function get_identifierName($field="*",$limit=array(),$cnd)
 	{
-		$q=$this->db->query('SELECT * FROM default_indikator WHERE active=1 '.$cnd.' LIMIT '.$limit[1].','.$limit[0].'');
+		$q=$this->db->query('SELECT * FROM default_indikator WHERE active=1 '.$cnd.' ORDER BY nama ASC LIMIT '.$limit[1].','.$limit[0].'');
 		//echo $this->db->last_query();//die();
 		return $q->result_array();
 	}

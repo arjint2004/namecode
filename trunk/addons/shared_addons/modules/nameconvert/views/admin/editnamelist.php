@@ -18,10 +18,10 @@
 		<? } ?>
 		<table class="zebra-striped">
 			<tr>
-				<td>GROUP</td>
+				<td>Region</td>
 				<td>
 					<select style="width:200px;" name="id_group" id="id_groupnamelistedit" required >
-						<option value="">Select Group Name</option>
+						<option value="">Select Region</option>
 						<? foreach($group as $datagroupname){?>
 						<option <?if($datagroupname['id']==@$data[0]['id_group']){echo 'selected';}?> value="<?=$datagroupname['id']?>"><?=$datagroupname['group']?></option>
 						<? } ?>

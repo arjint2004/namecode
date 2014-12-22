@@ -1,5 +1,5 @@
 <section class="title">
-	<h4>Import Name Group</h4>
+	<h4>Import Region</h4>
 </section>
 <section class="item">
 	<div class="content">
