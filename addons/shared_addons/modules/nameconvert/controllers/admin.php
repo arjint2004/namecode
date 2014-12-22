@@ -282,6 +282,12 @@ class Admin extends Admin_Controller
 				$this->db->query('DELETE FROM default_indikator WHERE id='.$id.'');
 			}
 		}
+		if(isset($_POST['id_group']) && $_POST['id_group']!=''){
+			$cnd="AND id_kat_indikator=".$_POST['id_group']."";
+		}else{
+			$cnd="";
+		}
+		
 		if(isset($_POST['id_kat_indikator']) && $_POST['id_kat_indikator']!=''){
 			$cnd="AND id_kat_indikator=".$_POST['id_kat_indikator']."";
 		}else{
@@ -289,9 +295,10 @@ class Admin extends Admin_Controller
 		}
 		//$this->load->model('nameconvert/nameconvert_m');
 	
-		$total_rows =$this->nameconvert_m->get_count_identifierName();
+		$total_rows =$this->nameconvert_m->get_count_identifierName($cnd);
 		// Create pagination links
 		$pagination = create_pagination('admin/nameconvert/identyname', $total_rows,Settings::get('records_per_page'),4);
+		//$pagination = create_pagination('admin/nameconvert/identyname', 500,4);
 
 		$data = $this->nameconvert_m->get_identifierName('*',array($pagination['limit'], $pagination['offset']),$cnd);
 		//pr($data);die();
@@ -311,11 +318,21 @@ class Admin extends Admin_Controller
 		if(isset($_POST['nama'])){
 			//pr($_POST);die();
 			$this->load->library('nameconvert/nameconverts');
+			//$namaarr=$this->db->query('SELECT nama FROM default_indikator WHERE id_kat_indikator='.$_POST['id_kat_indikator'].'')->result_array();
+			$namaarr=$this->db->query('SELECT nama FROM default_indikator')->result_array();
+			$namaarr = array_map(function($var){ return $var['nama']; }, $namaarr);
+
 			foreach($_POST['nama'] as $idx=>$nama){
 				if($nama!=''){
 					$nameclear=$this->nameconverts->clearname(strtoupper($nama));
-					$data_insert=array('nama'=>strtoupper($nameclear),'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
-					$this->db->insert('indikator',$data_insert);
+					$namexp=explode(' ',$nameclear);
+					foreach($namexp as $datain){
+						if(!in_array(strtoupper($datain),$namaarr)){
+							$data_insert=array('nama'=>strtoupper($datain),'id_kat_indikator'=>$_POST['id_kat_indikator'],'active'=>1);
+							$this->db->insert('indikator',$data_insert);
+							//echo $this->db->last_query();
+						}
+					}
 				}
 			}
 			redirect('admin/nameconvert/identyname');
@@ -336,12 +353,13 @@ class Admin extends Admin_Controller
 			);
 			$this->db->where('id',$id);
 			if($this->db->update('indikator',$data_update)){
-				redirect('admin/nameconvert/identyname');
+				//redirect('admin/nameconvert/identyname');
+				echo $this->db->last_query();
 				die();
 			}
 		}
 		$data=$this->nameconvert_m->get_identifierNameById($id);
-		
+		$this->input->is_ajax_request() and $this->template->set_layout(false);
 		$identifirecat = $this->nameconvert_m->get_identifierCatAll("*",1);
 		$this->template
 			->title('Edit Category Identifier')
@@ -365,6 +383,8 @@ class Admin extends Admin_Controller
 	public function importidentifier()
 	{
 		if(isset($_FILES['file_excell'])){
+			$namaarr=$this->db->query('SELECT nama FROM default_indikator')->result_array();
+			$namaarr = array_map(function($var){ return $var['nama']; }, $namaarr);
 			$data=$this->getdataexcell();
 			unset($data['cells'][1]);
 			$this->load->library('nameconvert/nameconverts');
@@ -373,18 +393,24 @@ class Admin extends Admin_Controller
 				$namaarray=explode(' ',$nameclear);
 				//pr($namaarray);die();
 				foreach($namaarray as $namamurni){
-					if($namamurni!=''){
-						$insert_data=array(
-							'nama'=>strtoupper($namamurni),
-							'id_kat_indikator'=>$_POST['id_kat_indikator'],
-							'active'=>1
-						);
-						if($this->db->insert('indikator',$insert_data)){
-							unset($insert_data);
-						}				
-					}				
+					$namagroup[$namamurni]=$namamurni;			
 				}
 
+			}
+			
+			foreach($namagroup as $namamurni){
+					if($namamurni!=''){
+						if(!in_array(strtoupper($namamurni),$namaarr)){
+							$insert_data=array(
+								'nama'=>str_replace("\x92","'",strtoupper($namamurni)),
+								'id_kat_indikator'=>$_POST['id_kat_indikator'],
+								'active'=>1
+							);
+							if($this->db->insert('indikator',$insert_data)){
+								unset($insert_data);
+							}				
+						}				
+					}					
 			}
 			redirect('admin/nameconvert/identyname');
 		}
@@ -522,12 +548,43 @@ class Admin extends Admin_Controller
 		
 		foreach($dataprocess as $dataresulr){
 			$result=$this->nameconverts->clear_name($dataresulr['name']);
-			$conculsion=$this->conculsion($result);
+			$conculsion=$this->conculsion2($result);
 			$this->db->where('id',$dataresulr['id']);
 			$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
 			$this->db->update('nameconverts',$data_update);
 		}
 		
+	}
+	private function conculsion2($namaarray=array()){
+
+		foreach($namaarray as $namaarray1){
+			foreach($namaarray1 as $namaarray2){
+				$merged[]=$namaarray2;
+			}
+		}
+		
+		$eval='';
+		$i=-1;
+		$resultnya='';
+		$conculsion='';
+		$merged=array_unique($merged);
+		foreach($merged as $ix=>$result){
+			$i++;
+			$eval .='$merged[0]==$merged['.$i.'] AND ';
+			$resultnya .=''.$result.' - ';
+		}
+		$eval=substr($eval,0,-5);
+		$eval1='if('.$eval.'){
+			$conculsion="Murni '.$merged[0].'";
+		}else{
+			$conculsion="'.substr($resultnya,0,-3).'";
+		}';
+		@eval($eval1);
+		//pr(substr($eval,0,-5));
+		//pr($eval);
+		//pr($conculsion);
+		//pr($merged);
+		return $conculsion;
 	}
 	private function conculsion($namaarray=array()){
 
@@ -565,16 +622,21 @@ class Admin extends Admin_Controller
 			$this->export($_POST['id_group']);
 			die();
 		}
+		if(isset($_POST['ExportExcellUnknown'])){
+			$this->exportunknown($_POST['id_group']);
+			die();
+		}
 		if(isset($_POST['process'])){
 			$this->load->library('nameconvert/nameconverts');
 			$dataprocess=$this->nameconvert_m->get_namaByIdGroup($_POST['id_group']);
 			//pr($dataprocess);die();
 			foreach($dataprocess as $dataresulr){
 				$result=$this->nameconverts->clear_name($dataresulr['name']);
-				$conculsion=$this->conculsion($result);
+				$conculsion=$this->conculsion2($result);
 				$this->db->where('id',$dataresulr['id']);
-				$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
 				
+				$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
+				if(strpos($conculsion, 'Unknown')===false){$data_update['has_unknown']=0;}else{$data_update['has_unknown']=1;}
 				$this->db->update('nameconverts',$data_update);
 			}
 		}
@@ -687,7 +749,7 @@ class Admin extends Admin_Controller
 				$born_date=gmdate("d-m-Y", $UNIX_DATE);
 				$insert_data=array(
 					'id_group'=>$_POST['id_group'],
-					'name'=>strtoupper($nameclear),
+					'name'=>str_replace("\x92","'",strtoupper($nameclear)),
 					'born_place'=>$dataimp[2],
 					'born_date'=>$born_date,
 					'religion'=>$dataimp[4],
@@ -715,10 +777,10 @@ class Admin extends Admin_Controller
 	//IMPORT
 	
 	//EXPORT
-	function export($id_groups=0){
+	function exportunknown($id_groups=0){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT * FROM default_nameconverts WHERE id_group='.$id_groups.'')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1')->result_array();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
 			foreach($arrresult as $nm=>$resdata){
@@ -730,10 +792,40 @@ class Admin extends Admin_Controller
 			$rss='';
 		}
 		//pr($namadata);
-		$this->export->process($namadata);
+		$this->export->process($namadata,$namadata[0]['region'].'_UNKNOWN');
+	}
+	function export($id_groups=0){
+		$rss='';
+		$this->load->library('nameconvert/export');
+		$namadata=$this->db->query('SELECT *, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0')->result_array();
+		foreach($namadata as $idd=>$datanama){
+			$arrresult=unserialize($datanama['result']);
+			foreach($arrresult as $nm=>$resdata){
+				$rrq=implode(',',$resdata);
+				$rss .=''.$nm.'='.$rrq.' |';
+			}
+			
+			$namadata[$idd]['result']=$rss;
+			$rss='';
+		}
+		//pr($namadata);
+
+		$this->export->process($namadata,$namadata[0]['region']);
 	}
 	//STATISTIC
-	
+		
+	function resetdatar(){
+		$this->db->query('TRUNCATE TABLE default_indikator');
+		$this->db->query('TRUNCATE TABLE default_nameconverts');
+		$this->db->query('TRUNCATE TABLE default_name_group');
+		$this->db->query('TRUNCATE TABLE default_name_kategori_indikator');
+		
+		redirect('admin/nameconvert/namelist');
+	}		
+	function resetdatarnamelist(){
+		$this->db->query('TRUNCATE TABLE default_nameconverts');
+		redirect('admin/nameconvert/namelist');
+	}
 	function test_clearname(){
 		$this->load->library('nameconvert/nameconverts');
 		$nameclear=$this->nameconverts->clearname('HJ. SISWO MULYO SUMARTO / WASIS');

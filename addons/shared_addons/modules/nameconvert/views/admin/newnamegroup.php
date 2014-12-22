@@ -1,5 +1,5 @@
 <section class="title">
-	<h4><?if(!empty($data)){?>Edit <?}else{?>New <?}?> Name Group</h4>
+	<h4><?if(!empty($data)){?>Edit <?}else{?>New <?}?>Region</h4>
 </section>
 <section class="item">
 	<div class="content">
@@ -11,7 +11,7 @@
 		<? } ?>
 		<table class="zebra-striped">
 			<tr>
-				<td>Group</td>
+				<td>Region</td>
 				<td><input type="text" name="group" required value="<?=@$data[0]['group']?>"/></td>
 			</tr>
 			<tr>

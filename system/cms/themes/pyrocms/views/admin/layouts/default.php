@@ -91,6 +91,7 @@ div#menubox #box {
 					<li><a href="<?=base_url('admin/nameconvert/identycategory')?>">Identifier Category List</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/newcategory')?>">New Identifier Category</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/importcategory')?>">Import Identifier Category</a></li>
+					<li><a href="<?=base_url('uploads/CategoryIdentifier.xls')?>">Template Import</a></li>
 				</ul>
 			</div>
             <div class="bt"><a >Identifier</a>
@@ -98,13 +99,15 @@ div#menubox #box {
 					<li><a href="<?=base_url('admin/nameconvert/identyname')?>">Identifier Name</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/newidentifier')?>">New Identifier</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/importidentifier')?>">Import Identifier</a></li>
+					<li><a href="<?=base_url('uploads/NameIdentifier.xls')?>">Template Import</a></li>
 				</ul>
 			</div>
-            <div class="bt"><a >Name Group</a>
+            <div class="bt"><a >Region</a>
 				<ul>
-					<li><a href="<?=base_url('admin/nameconvert/namegroup')?>">Name Group</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/newnamegroup')?>">New Name Group</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/importnamegroup')?>">Import Name Group</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/namegroup')?>">Region List</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/newnamegroup')?>">New Region</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/importnamegroup')?>">Import Region</a></li>
+					<li><a href="<?=base_url('uploads/nameGroup.xls')?>">Template Import</a></li>
 				</ul>
 			</div>
             <div class="bt"><a >Name List</a>
@@ -112,6 +115,13 @@ div#menubox #box {
 					<li><a href="<?=base_url('admin/nameconvert/namelist')?>">Name List</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/newname')?>">New Name</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/importname')?>">Import Name</a></li>
+					<li><a href="<?=base_url('uploads/dummynamelist.xls')?>">Template Import</a></li>
+				</ul>
+			</div>
+            <div class="bt"><a >Reset</a>
+				<ul>
+					<li><a href="<?=base_url('admin/nameconvert/resetdatar')?>" onClick="if(confirm('Are you sure reset data')){}else{return false;}">Reset data</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/resetdatarnamelist')?>" onClick="if(confirm('Are you sure reset data')){}else{return false;}">Reset Namelist</a></li>
 				</ul>
 			</div>
         </div>
@@ -138,7 +148,7 @@ div#menubox #box {
 
 			<ul id="lang">
 				<form action="<?php echo current_url(); ?>" id="change_language" method="get">
-					<select class="chzn" name="lang" onchange="this.form.submit();">
+					<select class="chzn" name="lang" onChange="this.form.submit();">
 						<?php foreach(config_item('supported_languages') as $key => $lang): ?>
 							<option value="<?php echo $key; ?>" <?php echo CURRENT_LANGUAGE == $key ? ' selected="selected" ' : ''; ?>>
 								 <?php echo $lang['name']; ?>

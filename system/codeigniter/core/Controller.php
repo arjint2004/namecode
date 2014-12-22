@@ -52,7 +52,8 @@ class CI_Controller {
 	 * @return	void
 	 */
 	public function __construct()
-	{
+	{	
+		ini_set('display_errors', false);
 		self::$instance =& $this;
 
 		// Assign all the class objects that were instantiated by the

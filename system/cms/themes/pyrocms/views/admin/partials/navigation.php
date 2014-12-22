@@ -8,6 +8,16 @@
 		// We have already vetted them for permissions
 		// in the Admin_Controller, so we can just
 		// display them now.
+		//echo '<pre>';
+		//print_r($menu_items);
+		//echo '<pre>';
+		unset($menu_items['Konten']);
+		unset($menu_items['Structure']);
+		unset($menu_items['Data']);
+		unset($menu_items['Pengguna']);
+		unset($menu_items['Pengaturan']);
+		unset($menu_items['Pengaya']);
+		
 		foreach ($menu_items as $key => $menu_item)
 		{
 			if (is_array($menu_item))
