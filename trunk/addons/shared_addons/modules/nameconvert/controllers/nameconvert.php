@@ -25,9 +25,37 @@ class Nameconvert extends Public_Controller
 	/**
 	 * All items
 	 */
-	public function process($offset = 0)
+	public function process($token="",$action="")
 	{
-		echo "neng kene iki cron";
+		echo $token;
+		echo $action;
+		//echo md5("CreatedByAsbinArjinto12222014");
+		/*if($token=="301048a7ace156bd32241ba0021b6c0d"){	
+			if($action="ExportExcell"){
+				$this->export($_POST['id_group']);
+				die();
+			}
+			if($action="ExportExcellUnknown"){
+				$this->exportunknown($_POST['id_group']);
+				die();
+			}
+			if($action="process")){
+				$this->load->library('nameconvert/nameconverts');
+				$dataprocess=$this->nameconvert_m->get_nama();
+				//pr($dataprocess);die();
+				foreach($dataprocess as $dataresulr){
+					$result=$this->nameconverts->clear_name($dataresulr['name']);
+					$conculsion=$this->conculsion2($result);
+					$this->db->where('id',$dataresulr['id']);
+					
+					$data_update=array('result'=>serialize($result),'kesimpulan'=>$conculsion);
+					if(strpos($conculsion, 'Unknown')===false){$data_update['has_unknown']=0;}else{$data_update['has_unknown']=1;}
+					$this->db->update('nameconverts',$data_update);
+				}
+			}
+		}else{
+			echo "Wrong Authentication";
+		}*/
 	}
 	public function index($offset = 0)
 	{
