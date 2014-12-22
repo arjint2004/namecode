@@ -616,6 +616,10 @@ class Admin extends Admin_Controller
 		//pr($merged);
 		return $conculsion;
 	}
+	public function clitest()
+	{
+		echo "Asbin Arjinto";
+	}
 	public function namelist()
 	{
 		if(isset($_POST['ExportExcell'])){
