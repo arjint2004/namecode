@@ -27,10 +27,10 @@ class Nameconvert extends Public_Controller
 	 */
 	public function process($token="",$action="")
 	{
-		echo $token;
-		echo $action;
+		//echo $token;
+		//echo $action;
 		//echo md5("CreatedByAsbinArjinto12222014");
-		/*if($token=="301048a7ace156bd32241ba0021b6c0d"){	
+		if($token=="301048a7ace156bd32241ba0021b6c0d"){	
 			if($action="ExportExcell"){
 				$this->export($_POST['id_group']);
 				die();
@@ -55,7 +55,7 @@ class Nameconvert extends Public_Controller
 			}
 		}else{
 			echo "Wrong Authentication";
-		}*/
+		}
 	}
 	public function index($offset = 0)
 	{
