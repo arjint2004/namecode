@@ -226,7 +226,7 @@ define('ENVIRONMENT', (isset($_SERVER['PYRO_ENV']) ? $_SERVER['PYRO_ENV'] : PYRO
 	define('BASEPATH', str_replace("\\", "/", $system_path));
 	
 	// The site slug: (example.com)
-	define('SITE_DOMAIN', $_SERVER['HTTP_HOST']);
+	@define('SITE_DOMAIN', $_SERVER['HTTP_HOST']);
 
  	// This only allows you to change the name. ADDONPATH should still be used in the app
 	define('ADDON_FOLDER', $addon_folder.'/');
