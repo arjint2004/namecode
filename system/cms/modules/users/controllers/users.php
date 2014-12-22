@@ -95,6 +95,10 @@ class Users extends Public_Controller
 	/**
 	 * Let's login, shall we?
 	 */
+	public function clitest()
+	{
+		echo "clitest";
+	}
 	public function login()
 	{
 		// Check post and session for the redirect place
