@@ -38,6 +38,12 @@ class Nameconvert_m extends MY_Model {
 		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE id_group='.$id.' AND kesimpulan="" AND result=""');
 		//echo $this->db->last_query();die();
 		return $q->result_array();
+	}
+	public function get_nama()
+	{
+		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE  kesimpulan="" AND result=""');
+		//echo $this->db->last_query();die();
+		return $q->result_array();
 	}	
 	public function get_nameById($id=0)
 	{
