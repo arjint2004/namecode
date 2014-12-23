@@ -55,6 +55,13 @@ class Nameconvert extends Public_Controller
 					$this->db->update('nameconverts',$data_update);
 					//echo $this->db->last_query();
 				}
+				$grup=$this->nameconvert_m->getAll_nameGroup("*",1);
+				//pr($grup);
+				foreach($grup as $dtgroup){
+					$this->export($dtgroup['id'],1);
+					$this->exportunknown($dtgroup['id'],1);
+				}
+				
 			}
 		}else{
 			echo "Wrong Authentication";
@@ -122,10 +129,11 @@ class Nameconvert extends Public_Controller
 		return $conculsion;
 	}
 	//EXPORT
-	function exportunknown($id_groups=0){
+	function exportunknown($id_groups=0,$save=1){
 		$rss='';
 		$this->load->library('nameconvert/export');
 		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1')->result_array();
+		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
 			foreach($arrresult as $nm=>$resdata){
@@ -137,12 +145,18 @@ class Nameconvert extends Public_Controller
 			$rss='';
 		}
 		//pr($namadata);
-		$this->export->process($namadata,$namadata[0]['region'].'_UNKNOWN',1);
+		
+		if($save==1){
+			$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+		}else{
+			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+		}
 	}
-	function export($id_groups=0){
+	function export($id_groups=0,$save=0){
 		$rss='';
 		$this->load->library('nameconvert/export');
 		$namadata=$this->db->query('SELECT *, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0')->result_array();
+		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
 			foreach($arrresult as $nm=>$resdata){
@@ -154,8 +168,12 @@ class Nameconvert extends Public_Controller
 			$rss='';
 		}
 		//pr($namadata);
-
-		$this->export->process($namadata,$namadata[0]['region'],1);
+		if($save==1){
+			$this->export->processsave($namadata,$namadata[0]['region'],$save);
+		}else{
+			$this->export->process($namadata,$namadata[0]['region'],$save);
+		}
+		
 	}
 	//STATISTIC
 	public function index($offset = 0)
