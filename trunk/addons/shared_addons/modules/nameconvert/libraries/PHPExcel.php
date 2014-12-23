@@ -1288,16 +1288,17 @@ class PHPExcel
 
 				$objWriter = PHPExcel_IOFactory::createWriter($this, 'Excel2007');
 				$objWriter->save('php://output');
+				exit;
 			}elseif($save==1){
 				$objWriter = PHPExcel_IOFactory::createWriter($this, 'Excel2007');
 				ob_start();
 				$objWriter->save('php://output');
 				$output = ob_get_contents();
-				file_put_contents('D:\webdevel\nameconverts\uploads\ff'.$fileName.'.xlsx', $output); 
+				file_put_contents('D:\webdevel\nameconverts\uploads\export\export_'.$fileName.'.xlsx', $output); 
 				ob_end_clean();
 			}
 			
-			exit;
+			
 
 		   
 		   
