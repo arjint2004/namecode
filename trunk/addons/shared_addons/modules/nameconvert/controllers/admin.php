@@ -796,7 +796,7 @@ class Admin extends Admin_Controller
 			$rss='';
 		}
 		//pr($namadata);
-		$this->export->process($namadata,$namadata[0]['region'].'_UNKNOWN');
+		$this->export->process($namadata,$namadata[0]['region'].'_UNKNOWN',0);
 	}
 	function export($id_groups=0){
 		$rss='';

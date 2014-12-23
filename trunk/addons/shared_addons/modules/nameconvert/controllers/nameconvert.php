@@ -121,6 +121,43 @@ class Nameconvert extends Public_Controller
 		//pr($merged);
 		return $conculsion;
 	}
+	//EXPORT
+	function exportunknown($id_groups=0){
+		$rss='';
+		$this->load->library('nameconvert/export');
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1')->result_array();
+		foreach($namadata as $idd=>$datanama){
+			$arrresult=unserialize($datanama['result']);
+			foreach($arrresult as $nm=>$resdata){
+				$rrq=implode(',',$resdata);
+				$rss .=''.$nm.'='.$rrq.' |';
+			}
+			
+			$namadata[$idd]['result']=$rss;
+			$rss='';
+		}
+		//pr($namadata);
+		$this->export->process($namadata,$namadata[0]['region'].'_UNKNOWN',1);
+	}
+	function export($id_groups=0){
+		$rss='';
+		$this->load->library('nameconvert/export');
+		$namadata=$this->db->query('SELECT *, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0')->result_array();
+		foreach($namadata as $idd=>$datanama){
+			$arrresult=unserialize($datanama['result']);
+			foreach($arrresult as $nm=>$resdata){
+				$rrq=implode(',',$resdata);
+				$rss .=''.$nm.'='.$rrq.' |';
+			}
+			
+			$namadata[$idd]['result']=$rss;
+			$rss='';
+		}
+		//pr($namadata);
+
+		$this->export->process($namadata,$namadata[0]['region'],1);
+	}
+	//STATISTIC
 	public function index($offset = 0)
 	{
 		// set the pagination limit

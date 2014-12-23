@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Export
     {
-		public function process($array,$namefile='export')
+		public function process($array,$namefile='export',$save=0)
         {
-			//pr($array);die();
+			//pr($save);die();
 			switch(@$_POST['jenis']){
 				case "Name_Convert":
 					$header=array(
@@ -20,7 +20,7 @@ class Export
 			// Create new PHPExcel object
 			$objPHPExcel = new PHPExcel;
 			if(!empty($array) && !empty($header)){
-				$objPHPExcel->exports('default',$array,$namefile,$header);
+				$objPHPExcel->exports('default',$array,$namefile,$header,$save);
 			}else{
 				echo '<script>
 				alert("Data kosong");

@@ -1137,7 +1137,7 @@ class PHPExcel
     }
 	
 
-	function exports($jenis='default',$array=array(),$fileName='export',$header=array()){
+	function exports($jenis='default',$array=array(),$fileName='export',$header=array(),$save=0){
 
 
 			if (PHP_SAPI == 'cli')
@@ -1272,22 +1272,31 @@ class PHPExcel
 			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 			$this->setActiveSheetIndex(0);
 
+			if($save==0){
+				// Redirect output to a client’s web browser (Excel2007)
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
+				header('Cache-Control: max-age=0');
+				// If you're serving to IE 9, then the following may be needed
+				header('Cache-Control: max-age=1');
 
-			// Redirect output to a client’s web browser (Excel2007)
-			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-			header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
-			header('Cache-Control: max-age=0');
-			// If you're serving to IE 9, then the following may be needed
-			header('Cache-Control: max-age=1');
+				// If you're serving to IE over SSL, then the following may be needed
+				header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+				header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+				header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+				header ('Pragma: public'); // HTTP/1.0
 
-			// If you're serving to IE over SSL, then the following may be needed
-			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-			header ('Pragma: public'); // HTTP/1.0
-
-			$objWriter = PHPExcel_IOFactory::createWriter($this, 'Excel2007');
-			$objWriter->save('php://output');
+				$objWriter = PHPExcel_IOFactory::createWriter($this, 'Excel2007');
+				$objWriter->save('php://output');
+			}elseif($save==1){
+				$objWriter = PHPExcel_IOFactory::createWriter($this, 'Excel2007');
+				ob_start();
+				$objWriter->save('php://output');
+				$output = ob_get_contents();
+				file_put_contents('D:\webdevel\nameconverts\uploads\ff'.$fileName.'.xlsx', $output); 
+				ob_end_clean();
+			}
+			
 			exit;
 
 		   
