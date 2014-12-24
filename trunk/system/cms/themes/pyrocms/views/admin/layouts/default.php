@@ -120,8 +120,8 @@ div#menubox #box {
 			</div>
             <div class="bt"><a >Reset</a>
 				<ul>
-					<li><a href="<?=base_url('admin/nameconvert/resetdatar')?>" onClick="if(confirm('Are you sure reset data')){}else{return false;}">Reset data</a></li>
-					<li><a href="<?=base_url('admin/nameconvert/resetdatarnamelist')?>" onClick="if(confirm('Are you sure reset data')){}else{return false;}">Reset Namelist</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/resetdatar')?>" >Reset data</a></li>
+					<li><a href="<?=base_url('admin/nameconvert/resetdatarnamelist')?>">Reset Namelist</a></li>
 				</ul>
 			</div>
         </div>
