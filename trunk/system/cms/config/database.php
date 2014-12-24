@@ -34,9 +34,9 @@
 // Development
 $db[PYRO_DEVELOPMENT] = array(
 	'hostname'		=> 	'localhost',
-	'username'		=> 	'root',
-	'password'		=> 	'',
-	'database'		=> 	'asykuri_nama',
+	'username'		=> 	'studoid1_namecod',
+	'password'		=> 	'namecode123',
+	'database'		=> 	'studoid1_namecode',
 	'dbdriver' 		=> 	'mysqli',
 	'dbprefix' 		=>	'',
 	'pconnect' 		=>	FALSE,
