@@ -35,9 +35,7 @@
 			<?php endif ?>
 		</ul>
 	</section>
-	<style>
-		ul.context-menu-source li#downloadcstm {display:block !important;}
-	</style>
+
 	<section class="center">
 
 			<?php if ( ! $folders) : ?>
@@ -55,7 +53,6 @@
 				<li data-role="edit_folder"	data-applies-to="folder" data-menu="rename"><?php echo lang('files:rename') ?></li>
 				<!--<li data-applies-to="file" data-menu="edit"><?php echo lang('files:edit') ?></li>-->
 				<li data-role="download_file"	data-applies-to="file" data-menu="download"><?php echo lang('files:download') ?></li>
-				<li id="downloadcstm">Direct Download</li>
 				<li data-role="synchronize"	data-applies-to="folder" data-menu="synchronize"><?php echo lang('files:synchronize') ?></li>
 				<li data-role="delete_file"	data-applies-to="file" data-menu="delete"><?php echo lang('files:delete') ?></li>
 				<li data-role="delete_folder"	data-applies-to="folder" data-menu="delete"><?php echo lang('files:delete') ?></li>
@@ -175,12 +172,3 @@
 	</h5>
 	<h5 id="activity"></h5>
 </section>
-
-	<script>
-		$(document).ready(function(){
-			$("ul.ui-sortable ul li").click(function(){ alert('dfgdfg');
-				window.location="<?=base_url()?>uploads/default/files/"+$(this).attr('data-name');
-				window.close();
-			});
-		});
-	</script>
