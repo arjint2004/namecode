@@ -22,7 +22,7 @@ class Files_front extends Public_Controller
 	/**
 	 * Download a file
 	 */
-	public function download($id = 0)
+	public function downloadbak($id = 0)
 	{
 		$this->load->helper('download');
 
@@ -47,7 +47,24 @@ class Files_front extends Public_Controller
 
 		force_download($name , $data);
 	}
+	public function download($id = 0)
+	{
+		$this->load->helper('download');
 
+		$file = $this->file_m->select('files.*, file_folders.location')
+			->join('file_folders', 'file_folders.id = files.folder_id')
+			->get_by('files.id', $id) OR show_404();
+
+		// increment the counter
+		$this->file_m->update($id, array('download_count' => $file->download_count + 1));
+
+		
+		echo '<script>
+				window.open("'.base_url().'/uploads/default/files/'.$file->filename.'", "_blank");
+				</script>';
+			  redirect("admin/files#namecode");
+		//force_download($name , $data);
+	}
 	public function thumb($id = 0, $width = 100, $height = 100, $mode = null)
 	{
 		// is it a 15 char hash with no file extension or is it an old style numeric id with no file extension?
