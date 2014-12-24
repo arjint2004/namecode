@@ -22,7 +22,7 @@ class Files_front extends Public_Controller
 	/**
 	 * Download a file
 	 */
-	public function download($id = 0)
+	public function downloadbak($id = 0)
 	{
 		$this->load->helper('download');
 
@@ -47,7 +47,7 @@ class Files_front extends Public_Controller
 
 		force_download($name , $data);
 	}
-	public function downloadbak($id = 0)
+	public function download($id = 0)
 	{
 		$this->load->helper('download');
 
