@@ -56,12 +56,13 @@ class Nameconvert extends Public_Controller
 					$this->db->update('nameconverts',$data_update);
 					//echo $this->db->last_query();
 				}
+				$this->autoexport()();
 			}
 		}else{
 			echo "Wrong Authentication";
 		}
 	}
-	public function autoexport($token="",$actionx="")
+	public function autoexport()
 	{
 		$grup=$this->nameconvert_m->getAll_nameGroup("*",1);
 		//pr($grup);
