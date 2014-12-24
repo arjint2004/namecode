@@ -116,7 +116,7 @@ div#menubox #box {
 					<li><a href="<?=base_url('admin/nameconvert/newname')?>">New Name</a></li>
 					<li><a href="<?=base_url('admin/nameconvert/importname')?>">Import Name</a></li>
 					<li><a href="<?=base_url('uploads/dummynamelist.xls')?>">Template Import</a></li>
-					<li><a href="<?=base_url('admin/files')?>">Download Exported Data</a></li>
+					<li><a href="<?=base_url('admin/files#namecode')?>">Download Exported Data</a></li>
 				</ul>
 			</div>
             <div class="bt"><a >Reset</a>
