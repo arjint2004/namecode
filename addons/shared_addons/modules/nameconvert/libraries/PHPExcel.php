@@ -1295,9 +1295,9 @@ class PHPExcel
 				$objWriter->save('php://output');
 				$output = ob_get_contents();
 
-				file_put_contents('D:\webdevel\nameconverts\uploads\default\files\export_'.$fileName.'.xlsx', $output); 
+				#file_put_contents('D:\webdevel\nameconverts\uploads\default\files\export_'.$fileName.'.xlsx', $output); 
 
-				#file_put_contents('/home/studoid1/public_html/depan/uploads/export/export_'.$fileName.'.xlsx', $output); 
+				file_put_contents('/home/studoid1/public_html/depan/uploads/default/files/export_'.$fileName.'.xlsx', $output); 
 
 				ob_end_clean();
 				return 'export_'.$fileName.'.xlsx';
