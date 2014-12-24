@@ -171,7 +171,7 @@
 						<? } ?>
 						</select>
 					</td>
-					<td id="loadloop" style="width:80px;">
+					<!--<td id="loadloop" style="width:80px;">
 						<div class="buttons" style="text-align:left;margin:0;">		
 							<button class="btn green" style="margin:0;" value="Process" id="process" name="process" type="submit">
 								<span>Process</span>
@@ -184,7 +184,7 @@
 							<input type="submit" class="btn grey" style="margin:0; padding:7px;" id="ExportExcell" name="ExportExcellUnknown" value="ExportExcell Unknown Result" />
 						</div>
 					</td>
-				</tr>
+				</tr>-->
 			</tbody>
 		</table>
 		

@@ -56,18 +56,20 @@ class Nameconvert extends Public_Controller
 					$this->db->update('nameconverts',$data_update);
 					//echo $this->db->last_query();
 				}
-				$grup=$this->nameconvert_m->getAll_nameGroup("*",1);
-				//pr($grup);
-				foreach($grup as $dtgroup){
-					$this->export($dtgroup['id'],1);
-					$this->exportunknown($dtgroup['id'],1);
-				}
-				
 			}
 		}else{
 			echo "Wrong Authentication";
 		}
 	}
+	public function autoexport($token="",$actionx="")
+	{
+		$grup=$this->nameconvert_m->getAll_nameGroup("*",1);
+		//pr($grup);
+		foreach($grup as $dtgroup){
+			$this->export($dtgroup['id'],1);
+			$this->exportunknown($dtgroup['id'],1);
+		}
+	}	
 	private function conculsion2($namaarray=array()){
 
 		foreach($namaarray as $namaarray1){
