@@ -818,17 +818,30 @@ class Admin extends Admin_Controller
 	}
 	//STATISTIC
 		
-	function resetdatar(){
-		$this->db->query('TRUNCATE TABLE default_indikator');
-		$this->db->query('TRUNCATE TABLE default_nameconverts');
-		$this->db->query('TRUNCATE TABLE default_name_group');
-		$this->db->query('TRUNCATE TABLE default_name_kategori_indikator');
-		
-		redirect('admin/nameconvert/namelist');
+	function resetdatar($pass=""){
+	
+		if($_POST['pass']=="asykuri2014"){
+			$this->db->query('TRUNCATE TABLE default_indikator');
+			$this->db->query('TRUNCATE TABLE default_nameconverts');
+			$this->db->query('TRUNCATE TABLE default_name_group');
+			$this->db->query('TRUNCATE TABLE default_name_kategori_indikator');
+			
+			redirect('admin/nameconvert/namelist');
+		}
+		$this->template
+			->title($this->module_details['name'])
+			->set('group',$group)
+			->build('admin/resetall');
 	}		
-	function resetdatarnamelist(){
-		$this->db->query('TRUNCATE TABLE default_nameconverts');
-		redirect('admin/nameconvert/namelist');
+	function resetdatarnamelist($pass=""){
+		if($_POST['pass']=="asykuri2014"){
+			$this->db->query('TRUNCATE TABLE default_nameconverts');
+			redirect('admin/nameconvert/namelist');
+		}	
+		$this->template
+			->title($this->module_details['name'])
+			->set('group',$group)
+			->build('admin/reset');
 	}
 	function test_clearname(){
 		$this->load->library('nameconvert/nameconverts');
