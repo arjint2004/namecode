@@ -62,7 +62,7 @@ class Files_front extends Public_Controller
 		echo '<script>
 				window.open("'.base_url().'/uploads/default/files/'.$file->filename.'", "_blank");
 				</script>';
-			  redirect("admin/files#namecode");
+		//redirect("admin/files#namecode");
 		//force_download($name , $data);
 	}
 	public function thumb($id = 0, $width = 100, $height = 100, $mode = null)
