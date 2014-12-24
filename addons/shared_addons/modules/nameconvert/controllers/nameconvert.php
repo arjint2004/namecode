@@ -16,7 +16,8 @@ class Nameconvert extends Public_Controller
 		// Load the required classes
 		$this->load->model('nameconvert_m');
 		$this->lang->load('nameconvert');
-
+		$this->load->model('files/file_m');
+		
 		$this->template
 			->append_css('module::nameconvert.css')
 			->append_js('module::nameconvert.js');
@@ -147,10 +148,36 @@ class Nameconvert extends Public_Controller
 		//pr($namadata);
 		
 		if($save==1){
-			$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$this->insertfile(@$nmf,0);
 		}else{
 			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
 		}
+		
+	}
+	private function insertfile($namafile="",$filesize=0){
+				$this->db->query("DELETE FROM default_files WHERE name='".$namafile."'");
+				$data = array(
+					'id'			=> substr(md5(microtime() . $namafile), 0, 15),
+					'folder_id'		=> 1,
+					'user_id'		=> 1,
+					'type'			=> "d",
+					'name'			=> $namafile,
+					'path'			=> '{{ url:site }}uploads/default/files/'.$namafile,
+					'description'	=> '',
+					'alt_attribute'	=> "undefined",
+					'filename'		=> $namafile,
+					'extension'		=> ".xlsx",
+					'mimetype'		=> "application/zip",
+					'filesize'		=> $filesize,
+					'width'			=> 0,
+					'height'		=> 0,
+					'date_added'	=> now()
+				);
+				//$this->db->where('name',$namafile);
+				if($namafile!=""){
+					$this->db->insert('default_files',$data);
+				}
 	}
 	function export($id_groups=0,$save=0){
 		$rss='';
@@ -169,7 +196,8 @@ class Nameconvert extends Public_Controller
 		}
 		//pr($namadata);
 		if($save==1){
-			$this->export->processsave($namadata,$namadata[0]['region'],$save);
+			$nmf=$this->export->processsave($namadata,$namadata[0]['region'],$save);
+			$this->insertfile($nmf,0);
 		}else{
 			$this->export->process($namadata,$namadata[0]['region'],$save);
 		}

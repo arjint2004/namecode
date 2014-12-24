@@ -21,6 +21,7 @@ class Export
 			$objPHPExcel = new PHPExcel;
 			if(!empty($array) && !empty($header)){
 				$objPHPExcel->exports('default',$array,$namefile,$header,$save);
+				
 			}else{
 				echo '<script>
 				alert("Data kosong");
@@ -48,7 +49,8 @@ class Export
 			// Create new PHPExcel object
 			$objPHPExcel = new PHPExcel;
 			if(!empty($array) && !empty($header)){
-				$objPHPExcel->exports('default',$array,$namefile,$header,$save);
+				$nmf=$objPHPExcel->exports('default',$array,$namefile,$header,$save);
+				return $nmf;
 			}else{
 				/*echo '<script>
 				alert("Data kosong");
