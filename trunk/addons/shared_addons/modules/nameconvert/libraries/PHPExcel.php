@@ -1294,11 +1294,11 @@ class PHPExcel
 				ob_start();
 				$objWriter->save('php://output');
 				$output = ob_get_contents();
-<<<<<<< .mine
-				file_put_contents('D:\webdevel\nameconverts\uploads\default\files\export_'.$fileName.'.xlsx', $output); 
-=======
+
+				#file_put_contents('D:\webdevel\nameconverts\uploads\default\files\export_'.$fileName.'.xlsx', $output); 
+
 				file_put_contents('/home/studoid1/public_html/depan/uploads/export/export_'.$fileName.'.xlsx', $output); 
->>>>>>> .r23
+
 				ob_end_clean();
 				return 'export_'.$fileName.'.xlsx';
 			}
