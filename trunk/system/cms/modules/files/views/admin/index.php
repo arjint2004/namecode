@@ -40,10 +40,10 @@
 	</style>
 	<script>
 		$(document).ready(function(){
-			$("section#content ul li").click(function(){ alert('dfgdfg');
+			/*$("section#content ul li").click(function(){ alert('dfgdfg');
 				window.location="<?=base_url()?>uploads/default/files/"+$(this).attr('data-name');
 				window.close();
-			});
+			});*/
 		});
 	</script>
 	<section class="center">
