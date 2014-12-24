@@ -31,7 +31,6 @@ class Nameconvert extends Public_Controller
 		//echo $token;
 		//echo $actionx; 
 		//echo md5("CreatedByAsbinArjinto12222014");
-		pr($_SERVER);die();
 		if($token=="301048a7ace156bd32241ba0021b6c0d"){	
 			if($actionx=="ExportExcell"){
 				$this->export($_POST['id_group']);
