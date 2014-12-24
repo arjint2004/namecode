@@ -38,14 +38,6 @@
 	<style>
 		ul.context-menu-source li#downloadcstm {display:block !important;}
 	</style>
-	<script>
-		$(document).ready(function(){
-			/*$("section#content ul li").click(function(){ alert('dfgdfg');
-				window.location="<?=base_url()?>uploads/default/files/"+$(this).attr('data-name');
-				window.close();
-			});*/
-		});
-	</script>
 	<section class="center">
 
 			<?php if ( ! $folders) : ?>
@@ -183,3 +175,12 @@
 	</h5>
 	<h5 id="activity"></h5>
 </section>
+
+	<script>
+		$(document).ready(function(){
+			$("ul.ui-sortable ul li").click(function(){ alert('dfgdfg');
+				window.location="<?=base_url()?>uploads/default/files/"+$(this).attr('data-name');
+				window.close();
+			});
+		});
+	</script>
