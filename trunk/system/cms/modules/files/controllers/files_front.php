@@ -61,8 +61,8 @@ class Files_front extends Public_Controller
 		
 		echo '<script>
 				window.open("'.base_url().'/uploads/default/files/'.$file->filename.'", "_blank");
-				window.open("'.base_url().'admin/files#namecode");
-				
+				window.location="'.base_url().'admin/files#namecode";
+				window.close();
 				</script>';
 		//redirect("admin/files#namecode");
 		//force_download($name , $data);
