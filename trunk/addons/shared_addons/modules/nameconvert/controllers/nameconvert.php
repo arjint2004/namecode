@@ -56,7 +56,7 @@ class Nameconvert extends Public_Controller
 					$this->db->update('nameconverts',$data_update);
 					//echo $this->db->last_query();
 				}
-				$this->autoexport()();
+				$this->autoexport();
 			}
 		}else{
 			echo "Wrong Authentication";
