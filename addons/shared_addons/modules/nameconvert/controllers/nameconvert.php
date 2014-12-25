@@ -66,7 +66,7 @@ class Nameconvert extends Public_Controller
 	public function import()
 	{
 			$this->load->library('nameconvert/nameconverts');
-			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/dummynamelist.xls");
+			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/Lamongan.xls");
 			unset($data['cells'][1]);	 	 	
 				 	 	 
 			foreach($data['cells'] as $baris=>$dataimp){
