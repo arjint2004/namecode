@@ -66,32 +66,43 @@ class Nameconvert extends Public_Controller
 	public function import()
 	{
 			$this->load->library('nameconvert/nameconverts');
-			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/Lamongan.xls");
-			unset($data['cells'][1]);	 	 	
-				 	 	 
-			foreach($data['cells'] as $baris=>$dataimp){
-				$nameclear=$this->nameconverts->clearname($dataimp[1]);
-				//pr($dataimp[1]); 	die(); 
-				$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
-				$born_date=gmdate("d-m-Y", $UNIX_DATE);
-				$insert_data=array(
-					'id_group'=>1,
-					'name'=>str_replace("\x92","'",strtoupper($nameclear)),
-					'born_place'=>$dataimp[2],
-					'born_date'=>$born_date,
-					'religion'=>$dataimp[4],
-					'last_education'=>$dataimp[5],
-					'employment'=>$dataimp[6],
-					'mother'=>strtoupper($dataimp[7]),
-					'father'=>"".strtoupper($dataimp[8])."",
-					'result'=>"",
-					'kesimpulan'=>"",
-					'active'=>1
-				);
-				//pr($insert_data);
-				if($this->db->insert('nameconverts',$insert_data)){
-					unset($insert_data);
+			
+			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' ")->result_array();
+			
+			foreach($files as $datafiles){
+				$id_groups=explode('.',$datafiles['name']);
+				#$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
+				$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
+				$data=$this->getdataexcellfile($pathe);
+				
+				unset($data['cells'][1]); 	 
+				foreach($data['cells'] as $baris=>$dataimp){
+					//pr($dataimp);die();
+					$nameclear=$this->nameconverts->clearname($dataimp[1]);
+					//pr($nameclear); 	die(); 
+					$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
+					$born_date=gmdate("d-m-Y", $UNIX_DATE);
+					$insert_data=array(
+						'id_group'=>$id_groups[0],
+						'name'=>str_replace("\x92","'",strtoupper($nameclear)),
+						'born_place'=>$dataimp[2],
+						'born_date'=>$born_date,
+						'religion'=>$dataimp[4],
+						'last_education'=>$dataimp[5],
+						'employment'=>$dataimp[6],
+						'mother'=>strtoupper($dataimp[7]),
+						'father'=>"".strtoupper($dataimp[8])."",
+						'result'=>"",
+						'kesimpulan'=>"",
+						'active'=>1
+					);
+					//pr($insert_data);die();
+					if($this->db->insert('nameconverts',$insert_data)){
+						unset($insert_data);
+					}
 				}
+				//$this->db->query("DELETE FROM default_files WHERE id='".$datafiles['id']."'");
+				//unlink($pathe);
 			}
 	}
 	private function getdataexcellfile($file=null){
