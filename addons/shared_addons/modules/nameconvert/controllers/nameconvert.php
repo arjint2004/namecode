@@ -62,6 +62,49 @@ class Nameconvert extends Public_Controller
 			echo "Wrong Authentication";
 		}
 	}
+	
+	public function import()
+	{
+			$this->load->library('nameconvert/nameconverts');
+			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/Lamongan.xls");
+			unset($data['cells'][1]);	 	 	
+				 	 	 
+			foreach($data['cells'] as $baris=>$dataimp){
+				$nameclear=$this->nameconverts->clearname($dataimp[1]);
+				//pr($dataimp[1]); 	die(); 
+				$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
+				$born_date=gmdate("d-m-Y", $UNIX_DATE);
+				$insert_data=array(
+					'id_group'=>$_POST['id_group'],
+					'name'=>str_replace("\x92","'",strtoupper($nameclear)),
+					'born_place'=>$dataimp[2],
+					'born_date'=>$born_date,
+					'religion'=>$dataimp[4],
+					'last_education'=>$dataimp[5],
+					'employment'=>$dataimp[6],
+					'mother'=>strtoupper($dataimp[7]),
+					'father'=>"".strtoupper($dataimp[8])."",
+					'result'=>"",
+					'kesimpulan'=>"",
+					'active'=>1
+				);
+				//pr($insert_data);
+				if($this->db->insert('nameconverts',$insert_data)){
+					unset($insert_data);
+				}
+			}
+	}
+	private function getdataexcellfile($file=null){
+			// Load the spreadsheet reader library
+			$this->load->library('excel_reader');
+			// Set output Encoding.
+			$this->excel_reader->setOutputEncoding('CP1251');
+			$this->excel_reader->read($file);
+			error_reporting(E_ALL ^ E_NOTICE);
+			// Sheet 1
+			$data = $this->excel_reader->sheets[0] ;
+			return $data;
+	 }
 	public function autoexport()
 	{
 		$grup=$this->nameconvert_m->getAll_nameGroup("*",1);
