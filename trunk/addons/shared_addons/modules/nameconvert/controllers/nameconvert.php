@@ -31,6 +31,7 @@ class Nameconvert extends Public_Controller
 		//echo $token;
 		//echo $actionx; 
 		//echo md5("CreatedByAsbinArjinto12222014");
+		
 		if($token=="301048a7ace156bd32241ba0021b6c0d"){	
 			if($actionx=="ExportExcell"){
 				$this->export($_POST['id_group']);
@@ -42,6 +43,7 @@ class Nameconvert extends Public_Controller
 			}
 			if($actionx=="process"){
 				$this->load->library('nameconvert/nameconverts');
+				$this->import();
 				$dataprocess=$this->nameconvert_m->get_nama();
 
 				foreach($dataprocess as $dataresulr){
@@ -63,16 +65,14 @@ class Nameconvert extends Public_Controller
 		}
 	}
 	
-	public function import()
+	private function import()
 	{
-			$this->load->library('nameconvert/nameconverts');
-			
 			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' ")->result_array();
 			
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
-				#$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
-				$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
+				$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
+				#$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
 				$data=$this->getdataexcellfile($pathe);
 				
 				unset($data['cells'][1]); 	 
