@@ -66,7 +66,7 @@ class Nameconvert extends Public_Controller
 	public function import()
 	{
 			$this->load->library('nameconvert/nameconverts');
-			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/Lamongan.xls");
+			$data=$this->getdataexcellfile("/home/studoid1/public_html/depan/uploads/default/files/dummynamelist.xls");
 			unset($data['cells'][1]);	 	 	
 				 	 	 
 			foreach($data['cells'] as $baris=>$dataimp){
@@ -75,7 +75,7 @@ class Nameconvert extends Public_Controller
 				$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
 				$born_date=gmdate("d-m-Y", $UNIX_DATE);
 				$insert_data=array(
-					'id_group'=>$_POST['id_group'],
+					'id_group'=>1,
 					'name'=>str_replace("\x92","'",strtoupper($nameclear)),
 					'born_place'=>$dataimp[2],
 					'born_date'=>$born_date,
