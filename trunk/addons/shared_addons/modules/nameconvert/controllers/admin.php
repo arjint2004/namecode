@@ -144,7 +144,17 @@ class Admin extends Admin_Controller
 	
 	
 	
-	
+	private function getdataexcellfile($file=null){
+			// Load the spreadsheet reader library
+			$this->load->library('excel_reader');
+			// Set output Encoding.
+			$this->excel_reader->setOutputEncoding('CP1251');
+			$this->excel_reader->read($file);
+			error_reporting(E_ALL ^ E_NOTICE);
+			// Sheet 1
+			$data = $this->excel_reader->sheets[0] ;
+			return $data;
+	 }
 	
 	private function getdataexcell($file=null){
 		if($_FILES){
