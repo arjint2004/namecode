@@ -101,8 +101,8 @@ class Nameconvert extends Public_Controller
 						unset($insert_data);
 					}
 				}
-				//$this->db->query("DELETE FROM default_files WHERE id='".$datafiles['id']."'");
-				//unlink($pathe);
+				$this->db->query("DELETE FROM default_files WHERE id='".$datafiles['id']."'");
+				unlink($pathe);
 			}
 	}
 	private function getdataexcellfile($file=null){
