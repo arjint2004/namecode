@@ -199,7 +199,11 @@ class Nameconvert extends Public_Controller
 			$arrresult=unserialize($datanama['result']);
 			foreach($arrresult as $nm=>$resdata){
 				$rrq=implode(',',$resdata);
-				$rss .=''.$nm.'='.$rrq.' |';
+				if (strpos($rrq,'Unknown') !== true) {
+    					//$rss .=''.$nm.'='.$rrq.' |';
+    					$rss .=''.$rrq.' ';
+				}
+				
 			}
 			
 			$namadata[$idd]['result']=$rss;
@@ -208,10 +212,10 @@ class Nameconvert extends Public_Controller
 		//pr($namadata);
 		
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN_'.date('Y-m-d H:i:s'),$save);
+			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
 			$this->insertfile(@$nmf,0);
 		}else{
-			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN_'.date('Y-m-d H:i:s'),$save);
+			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
 		}
 		
 	}
@@ -256,10 +260,10 @@ class Nameconvert extends Public_Controller
 		}
 		//pr($namadata);
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,$namadata[0]['region'].'_'.date('Y-m-d H:i:s'),$save);
+			$nmf=$this->export->processsave($namadata,$namadata[0]['region'],$save);
 			$this->insertfile($nmf,0);
 		}else{
-			$this->export->process($namadata,$namadata[0]['region'].'_'.date('Y-m-d H:i:s'),$save);
+			$this->export->process($namadata,$namadata[0]['region'],$save);
 		}
 		
 	}
