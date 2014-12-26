@@ -71,8 +71,8 @@ class Nameconvert extends Public_Controller
 			
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
-				$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
-				#$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
+				#$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
+				$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
 				$data=$this->getdataexcellfile($pathe);
 				
 				unset($data['cells'][1]); 	 
@@ -80,13 +80,13 @@ class Nameconvert extends Public_Controller
 					//pr($dataimp);die();
 					$nameclear=$this->nameconverts->clearname($dataimp[1]);
 					//pr($nameclear); 	die(); 
-					$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
-					$born_date=gmdate("d-m-Y", $UNIX_DATE);
+					//$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
+					//$born_date=gmdate("d-m-Y", $UNIX_DATE);
 					$insert_data=array(
 						'id_group'=>$id_groups[0],
 						'name'=>str_replace("\x92","'",strtoupper($nameclear)),
 						'born_place'=>$dataimp[2],
-						'born_date'=>$born_date,
+						'born_date'=>$dataimp[3],
 						'religion'=>$dataimp[4],
 						'last_education'=>$dataimp[5],
 						'employment'=>$dataimp[6],
@@ -101,9 +101,11 @@ class Nameconvert extends Public_Controller
 						unset($insert_data);
 					}
 				}
+				unset($data);
 				$this->db->query("DELETE FROM default_files WHERE id='".$datafiles['id']."'");
 				unlink($pathe);
 			}
+			unset($files);
 	}
 	private function getdataexcellfile($file=null){
 			// Load the spreadsheet reader library
@@ -190,7 +192,7 @@ class Nameconvert extends Public_Controller
 	function exportunknown($id_groups=0,$save=1){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1 AND kesimpulan!="" AND result!=""')->result_array();
 		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
@@ -239,7 +241,7 @@ class Nameconvert extends Public_Controller
 	function export($id_groups=0,$save=0){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT *, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0 AND kesimpulan!="" AND result!=""')->result_array();
 		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
