@@ -58,6 +58,7 @@ class Nameconvert extends Public_Controller
 					$this->db->update('nameconverts',$data_update);
 					//echo $this->db->last_query();
 				}
+				unset($dataprocess);
 				$this->autoexport();
 			}
 		}else{
@@ -67,7 +68,7 @@ class Nameconvert extends Public_Controller
 	
 	private function import()
 	{
-			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' ")->result_array();
+			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' LIMIT 1")->result_array();
 			
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
