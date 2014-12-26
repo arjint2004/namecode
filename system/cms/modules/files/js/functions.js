@@ -634,7 +634,7 @@ jQuery(function($){
 		$(window).trigger('show-message', {message: pyro.lang.fetching});
 
 		post_data = { parent : folder_id };
-		$.post(SITE_URL + 'admin/files/folder_contents', post_data, function(data){
+		//$.post(SITE_URL + 'admin/files/folder_contents', post_data, function(data){
 			var results = $.parseJSON(data);
 
 			if (results.status) {
