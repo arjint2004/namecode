@@ -190,18 +190,19 @@ class Nameconvert extends Public_Controller
 		return $conculsion;
 	}
 	//EXPORT
-	function exportunknown($id_groups=0,$save=1){
+	public function exportunknown($id_groups=0,$save=1){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1 AND kesimpulan!="" AND result!=""')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1 AND kesimpulan!="" AND result!="" ORDER BY nm.name')->result_array();
 		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
 			foreach($arrresult as $nm=>$resdata){
 				$rrq=implode(',',$resdata);
-				if (strpos($rrq,'Unknown') !== true) {
+				
+				if (strpos($rrq,'Unknown') !== false) {
     					//$rss .=''.$nm.'='.$rrq.' |';
-    					$rss .=''.$rrq.' ';
+    					$rss .=''.$nm.' ';
 				}
 				
 			}
@@ -209,7 +210,7 @@ class Nameconvert extends Public_Controller
 			$namadata[$idd]['result']=$rss;
 			$rss='';
 		}
-		//pr($namadata);
+		//pr($namadata); die();
 		
 		if($save==1){
 			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
