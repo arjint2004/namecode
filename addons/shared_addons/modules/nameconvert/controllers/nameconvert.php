@@ -208,10 +208,10 @@ class Nameconvert extends Public_Controller
 		//pr($namadata);
 		
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN_'.date('Y-m-d H:i:s'),$save);
 			$this->insertfile(@$nmf,0);
 		}else{
-			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN_'.date('Y-m-d H:i:s'),$save);
 		}
 		
 	}
@@ -256,10 +256,10 @@ class Nameconvert extends Public_Controller
 		}
 		//pr($namadata);
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,$namadata[0]['region'],$save);
+			$nmf=$this->export->processsave($namadata,$namadata[0]['region'].'_'.date('Y-m-d H:i:s'),$save);
 			$this->insertfile($nmf,0);
 		}else{
-			$this->export->process($namadata,$namadata[0]['region'],$save);
+			$this->export->process($namadata,$namadata[0]['region'].'_'.date('Y-m-d H:i:s'),$save);
 		}
 		
 	}
