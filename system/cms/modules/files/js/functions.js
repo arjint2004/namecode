@@ -538,7 +538,7 @@ jQuery(function($){
 
 			onComplete: function (event, files, index, xhr, handler){
 				if (files.length === index + 1) {
-					$('#files-uploader a.cancel-upload').click();
+					//$('#files-uploader a.cancel-upload').click();
 				}
 			}
 		});
