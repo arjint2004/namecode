@@ -59,7 +59,7 @@ class Nameconvert extends Public_Controller
 					//echo $this->db->last_query();
 				}
 				unset($dataprocess);
-				$this->autoexport();
+				//$this->autoexport();
 			}
 		}else{
 			echo "Wrong Authentication";
@@ -193,7 +193,7 @@ class Nameconvert extends Public_Controller
 	public function exportunknown($id_groups=0,$save=1){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1 AND kesimpulan!="" AND result!="" ORDER BY nm.name')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=1 AND kesimpulan!="" AND result!="" AND nm.active!=2 ORDER BY nm.name LIMIT 5000')->result_array();
 		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
@@ -205,18 +205,20 @@ class Nameconvert extends Public_Controller
     					$rss .=''.$nm.' ';
 				}
 				
+				
 			}
 			
 			$namadata[$idd]['result']=$rss;
 			$rss='';
+			$this->db->query("UPDATE default_nameconverts SET active=2 WHERE id=".$datanama['id']."");
 		}
 		//pr($namadata); die();
 		
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$nmf=$this->export->processsave($namadata,@$namadata[0]['region'].'_UNKNOWN'.date("Y-m-d H:i:s"),$save);
 			$this->insertfile(@$nmf,0);
 		}else{
-			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN',$save);
+			$this->export->process($namadata,@$namadata[0]['region'].'_UNKNOWN'.date("Y-m-d H:i:s"),$save);
 		}
 		
 	}
@@ -247,7 +249,7 @@ class Nameconvert extends Public_Controller
 	function export($id_groups=0,$save=0){
 		$rss='';
 		$this->load->library('nameconvert/export');
-		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0 AND kesimpulan!="" AND result!=""')->result_array();
+		$namadata=$this->db->query('SELECT nm.*, g.group as region FROM default_nameconverts nm JOIN default_name_group g ON nm.id_group=g.id  WHERE nm.id_group='.$id_groups.' AND nm.has_unknown=0 AND kesimpulan!="" AND result!="" AND nm.active!=2 ORDER BY nm.name LIMIT 5000')->result_array();
 		//echo $this->db->last_query();
 		foreach($namadata as $idd=>$datanama){
 			$arrresult=unserialize($datanama['result']);
@@ -258,13 +260,14 @@ class Nameconvert extends Public_Controller
 			
 			$namadata[$idd]['result']=$rss;
 			$rss='';
+			$this->db->query("UPDATE default_nameconverts SET active=2 WHERE id=".$datanama['id']."");
 		}
 		//pr($namadata);
 		if($save==1){
-			$nmf=$this->export->processsave($namadata,$namadata[0]['region'],$save);
+			$nmf=$this->export->processsave($namadata,$namadata[0]['region'].date("Y-m-d H:i:s"),$save);
 			$this->insertfile($nmf,0);
 		}else{
-			$this->export->process($namadata,$namadata[0]['region'],$save);
+			$this->export->process($namadata,$namadata[0]['region'].date("Y-m-d H:i:s"),$save);
 		}
 		
 	}

@@ -632,6 +632,12 @@ class Admin extends Admin_Controller
 	}
 	public function namelist()
 	{
+		/*$dd=exec('date +"%H"');
+		
+		if($dd>=18 AND $dd<=){
+		
+		}
+		echo $dd;*/
 		if(isset($_POST['ExportExcell'])){
 			$this->export($_POST['id_group']);
 			die();

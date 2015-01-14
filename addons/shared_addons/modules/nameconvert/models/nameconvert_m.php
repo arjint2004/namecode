@@ -66,7 +66,7 @@ class Nameconvert_m extends MY_Model {
 	{
 		if($cnd==''){$cndact='';}else{$cndact=$cnd;}
 		if($active==''){$cndact.='';}else{$cndact.='AND active='.$active.'';}
-		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE 1 '.$cndact.' ORDER BY name ASC  LIMIT '.$limit[1].','.$limit[0].'');
+		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE 1 '.$cndact.' ORDER BY id DESC  LIMIT '.$limit[1].','.$limit[0].'');
 		//echo $this->db->last_query();
 		return $q->result_array();
 	}
