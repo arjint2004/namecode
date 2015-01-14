@@ -69,30 +69,30 @@ class Nameconvert extends Public_Controller
 	private function import()
 	{
 			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' LIMIT 1")->result_array();
-			
+			$arrayreplace=array('\xA0');
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
-				$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
-				#$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
+				#$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
+				$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
 				$data=$this->getdataexcellfile($pathe);
-				
+				//pr($data);die();
 				unset($data['cells'][1]); 	 
 				foreach($data['cells'] as $baris=>$dataimp){
 					//pr($dataimp);die();
 					$nameclear=$this->nameconverts->clearname($dataimp[1]);
-					//pr($nameclear); 	die(); 
+					//pr($nameclear); 	die();
 					//$UNIX_DATE = ($dataimp[3] - 25569) * 86400;
 					//$born_date=gmdate("d-m-Y", $UNIX_DATE);
 					$insert_data=array(
 						'id_group'=>$id_groups[0],
-						'name'=>str_replace("\x92","'",strtoupper($nameclear)),
-						'born_place'=>$dataimp[2],
-						'born_date'=>$dataimp[3],
-						'religion'=>$dataimp[4],
-						'last_education'=>$dataimp[5],
-						'employment'=>$dataimp[6],
-						'mother'=>strtoupper($dataimp[7]),
-						'father'=>"".strtoupper($dataimp[8])."",
+						'name'=>str_replace($arrayreplace, "",str_replace("\x92","'",strtoupper($nameclear))),
+						'born_place'=>str_replace($arrayreplace, "",$dataimp[2]),
+						'born_date'=>str_replace($arrayreplace, "",$dataimp[3]),
+						'religion'=>str_replace($arrayreplace, "",$dataimp[4]),
+						'last_education'=>str_replace($arrayreplace, "",$dataimp[5]),
+						'employment'=>str_replace($arrayreplace, "",$dataimp[6]),
+						'mother'=>str_replace($arrayreplace, "",strtoupper($dataimp[7])),
+						'father'=>str_replace($arrayreplace, "","".strtoupper($dataimp[8]).""),
 						'result'=>"",
 						'kesimpulan'=>"",
 						'active'=>1
