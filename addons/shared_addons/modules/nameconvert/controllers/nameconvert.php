@@ -72,8 +72,8 @@ class Nameconvert extends Public_Controller
 			$arrayreplace=array('\xA0');
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
-				#$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
-				$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
+				$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
+				#$pathe="D:/webdevel/nameconverts/uploads/default/files/".$datafiles['filename']."";
 				$data=$this->getdataexcellfile($pathe);
 				//pr($data);die();
 				unset($data['cells'][1]); 	 
