@@ -68,8 +68,9 @@ class Nameconvert extends Public_Controller
 	
 	private function import()
 	{
+			//$this->load->library('nameconvert/nameconverts');
 			$files=$this->db->query("SELECT a.id,a.name,a.filename FROM default_files a JOIN default_file_folders b ON a.folder_id=b.id WHERE b.name='import' LIMIT 1")->result_array();
-			$arrayreplace=array('\xA0');
+			$arrayreplace=array("\xA0");
 			foreach($files as $datafiles){
 				$id_groups=explode('.',$datafiles['name']);
 				$pathe="/home/studoid1/public_html/depan/uploads/default/files/".$datafiles['filename']."";
