@@ -14,7 +14,7 @@ class Admin extends Admin_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		pr($_SERVER);
+
 		// Load all the required classes
 		$this->load->model('nameconvert_m');
 		$this->load->library('form_validation');
