@@ -1,9 +1,14 @@
 <?php
 class nameconverts{
+	var $dataindikator;
+
 	function __construct(){
 
 		$qtitle=ci()->db->query('SELECT title FROM default_title')->result_array();
 		$this->arrwilcarddb = array_map(function($var){ return $var['title']; }, $qtitle);	
+		ci()->load->model('nameconvert_m');
+		$this->dataindikator=ci()->nameconvert_m->getIndikatorforSearch();
+		
 	}
 	function clear_name($string='MADYO SUTRISNO , NY .'){
 
@@ -48,23 +53,24 @@ class nameconverts{
 	}
 	function process($matching_letters=''){
 		//get indikator
-		ci()->load->model('nameconvert_m');
-		$dataindikator=ci()->nameconvert_m->getIndikatorforSearch();
-		//pr($dataindikator);
+		//ci()->load->model('nameconvert_m');
+		//$dataindikator=ci()->nameconvert_m->getIndikatorforSearch();
+		//pr($this->dataindikator);die();
 		//$matching_letters = 'Mono';
 		$out=array();
 		//pr($matching_letters);
 		
-		foreach($dataindikator as $asal=>$datas){
+		foreach($this->dataindikator as $asal=>$datas){
 			//$array2 = preg_grep("/{$matching_letters}/", $datas);
 			//$array2 = in_array($matching_letters, $datas);
 			if(in_array($matching_letters, $datas)){
 			  $out[]=$asal;
+				return $out;
+				break 2;
 			}
 		}
 		//pr($out);
 		//die();
-		return $out;
 	}
 }
 

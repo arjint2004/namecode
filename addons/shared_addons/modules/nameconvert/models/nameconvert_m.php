@@ -41,7 +41,7 @@ class Nameconvert_m extends MY_Model {
 	}
 	public function get_nama()
 	{
-		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE  kesimpulan="" AND result="" OR  kesimpulan like "%unknown%" ORDER BY kesimpulan ASC LIMIT 4000');
+		$q=$this->db->query('SELECT * FROM default_nameconverts WHERE  kesimpulan="" AND result="" OR  kesimpulan like "%unknown%" ORDER BY kesimpulan ASC LIMIT 50000');
 		//echo $this->db->last_query();die();
 		return $q->result_array();
 	}	
